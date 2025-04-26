@@ -1,0 +1,25 @@
+[project_id]
+# Tämä asetetaan, kun projekti linkitetään Supabase-projektiin komennolla `supabase link`
+# Esim: project_id = "your-project-ref"
+
+[auth]
+# Käytetäänkö sisäänrakennettua Auth-palvelua?
+# enable_signup = true
+# site_url = "http://localhost:3000" # Muista päivittää tuotanto-URL:ksi
+# additional_redirect_urls = ["http://localhost:3000/*"]
+
+[db]
+# Paikallisen tietokannan portti
+# port = 5432
+
+[studio]
+# Paikallisen Supabase Studion portti
+# port = 5433
+
+[api]
+# Paikallisen API-gatewayn portti
+# port = 54321
+
+[functions]
+# Määrittele Edge Functions -hakemisto (jos käytössä täällä)
+# import_map = "./supabase/functions/import_map.json" 

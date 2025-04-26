@@ -1,0 +1,39 @@
+{
+  "pages": {
+    "/(marketing)/page": [
+      "static/chunks/_e2b3d167._.js",
+      "static/chunks/_0aa1775a._.js",
+      "static/chunks/_95475b4f._.js",
+      "static/chunks/[root-of-the-server]__0d086310._.css",
+      "static/chunks/apps_aihio_app_layout_tsx_e96224ee._.js",
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_72c884b5._.js",
+      "static/chunks/_88c6b63a._.js",
+      "static/chunks/node_modules_tailwind-merge_dist_bundle-mjs_mjs_b854acb4._.js",
+      "static/chunks/node_modules_@radix-ui_react-icons_dist_react-icons_esm_ecd85ef9.js",
+      "static/chunks/_0ede4b18._.js",
+      "static/chunks/apps_aihio_app_error_tsx_7c4c575b._.js",
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_52e0e8da._.js",
+      "static/chunks/_a515d52a._.js",
+      "static/chunks/_080f71e8._.js",
+      "static/chunks/apps_aihio_app_not-found_tsx_7c4c575b._.js",
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_fc6e3d6b._.js",
+      "static/chunks/_0fa87a62._.js",
+      "static/chunks/apps_aihio_app_global-error_tsx_7c4c575b._.js",
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_91a103f0._.js",
+      "static/chunks/_77ca4cf0._.js",
+      "static/chunks/apps_aihio_app_(marketing)_layout_tsx_7c4c575b._.js",
+      "static/chunks/_5233eee3._.js",
+      "static/chunks/apps_aihio_app_(marketing)_loading_tsx_a5dd725d._.js",
+      "static/chunks/packages_8aded9b4._.js",
+      "static/chunks/_f855bb12._.js",
+      "static/chunks/apps_aihio_app_(marketing)_page_tsx_a5dd725d._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_597f125e._.js",
+      "static/chunks/500ed_next_dist_compiled_b8cfb447._.js",
+      "static/chunks/500ed_next_dist_client_99ba6519._.js",
+      "static/chunks/500ed_next_dist_4bee8b33._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_00636ac3._.js",
+      "static/chunks/apps_aihio_e69f0d32._.js",
+      "static/chunks/apps_aihio_f1cae778._.js"
+    ]
+  }
+}

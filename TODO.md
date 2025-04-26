@@ -79,7 +79,7 @@ Tämä dokumentti sisältää priorisoidun listan tehtävistä, jotka tarvitaan 
 4. Kehittää prototyyppi parannetusta chat-käyttöliittymästä streamaus-tuella
 5. Optimoida RAG-hakujärjestelmä matalan latenssin vaatimuksiin upotetuille chatboteille
 
-## Tuotantovalmis tietokantastrategia
+## Tuotantovalmis tietokantastrategia (Päivitetty: pgvector)
 
 Koska rakennamme tuotantovalmista palvelua, jossa käyttäjät upottavat chatbot-widgetin verkkosivuilleen, tarvitsemme alusta asti matalan latenssin ratkaisun. Tässä on suunnitelma tuotantovalmiin tietokantastrategian toteuttamiseksi.
 
@@ -98,160 +98,199 @@ Supabase toimii ensisijaisena tietokantana seuraaville:
 - Realtime-tuki keskustelujen päivityksiin
 - Helppo käyttöönotto ja skaalaus
 
-#### Vektoritietokanta: Pinecone
+#### Vektoritietokanta: Supabase (pgvector)
 
-Pinecone toimii matalan latenssin vektoritietokantana RAG-toiminnallisuudelle:
-- Dokumenttien vektorisointi ja tallennus
-- Semanttinen haku asiakaswidgeteissä
-- Metatietosuodattimet asiakaskohtaiseen sisältöön
+Supabase (PostgreSQL) käyttäen `pgvector`-laajennusta toimii vektoritietokantana RAG-toiminnallisuudelle:
+- Dokumenttien vektorisointi ja tallennus `documents`-tauluun.
+- Semanttinen samankaltaisuushaku `pgvector`-funktioilla.
+- Metatietosuodattimet asiakaskohtaiseen sisältöön suoraan SQL-kyselyissä.
 
-**Miksi Pinecone suoraan tuotantoon:**
-- Erittäin matala latenssi (50-100ms hakuvasteajat)
-- Skaalautuu automaattisesti miljooniin vektoreihin
-- Monipuoliset suodattimet metadatan avulla
-- Testattu luotettavuus tuotantokäytössä
-- Korkea saatavuus ja API-vakaus
+**Miksi pgvector + Supabase:**
+- Yksinkertaisempi arkkitehtuuri (ei erillistä palvelua).
+- Yhtenäinen datan hallinta ja RLS-tuki.
+- Mahdollisuus transaktioihin relaatio- ja vektoridatan välillä.
+- Hyvä lähtökohta, skaalautuvuutta voidaan arvioida myöhemmin.
 
-### Toteutussuunnitelma (1-3 kk)
+### Toteutussuunnitelma (1-3 kk) (Päivitetty: pgvector)
 
 1. **Tietokantarakenteen käyttöönotto:**
    - [ ] Supabasen asennus ja konfigurointi
      - [ ] Auth-järjestelmän käyttöönotto
-     - [ ] Tietokantarakenteen luominen
-   - [ ] Pinecone-projektin luominen
-     - [ ] Indeksien optimaalinen konfigurointi
-     - [ ] Metadatarakenteen suunnittelu
+     - [ ] Relaatiotietokantataulujen luominen (chatbots, conversations, messages)
+     - [ ] `pgvector`-laajennuksen aktivointi Supabasessa (`CREATE EXTENSION IF NOT EXISTS vector;`)
+     - [ ] `documents`-taulun luominen `vector`-tyypin sarakkeella.
+     - [ ] Indeksien luominen `documents`-tauluun (esim. HNSW tai IVFFlat).
 
 2. **Integrointirakenne:**
-   - [ ] Toteuta tietokanta-abstraktion kerros
+   - [ ] Toteuta tietokanta-abstraktion kerros (jos halutaan, ei pakollinen pgvectorin kanssa)
    ```typescript
-   // Tietokanta-abstraktion kerros
-   interface DatabaseProvider {
-     // Perustoiminnot
-     getUser(id: string): Promise<User>;
-     saveAgent(agent: Agent): Promise<string>;
-     // jne...
-   }
-   
-   interface VectorDatabaseProvider {
-     addDocuments(documents: Document[]): Promise<string[]>;
-     similaritySearch(query: string, filters?: Record<string, any>, k?: number): Promise<Document[]>;
-     // jne...
-   }
+   // Tietokanta-abstraktion kerros (Esimerkki, voidaan myös käyttää suoraan Supabase-clientia)
+   interface DatabaseProvider { /* ... */ }
+   interface VectorDatabaseProvider { /* ... */ }
 
    // Implementaatiot
-   class SupabaseDatabaseProvider implements DatabaseProvider {
-     // ...implementaatio
-   }
-
-   class PineconeVectorProvider implements VectorDatabaseProvider {
-     // ...implementaatio
+   class SupabaseProvider implements DatabaseProvider, VectorDatabaseProvider {
+     // ...implementaatio pgvector-hauille ja muille operaatioille
+     // Käyttää @aihio/supabase-pakettia
    }
    ```
 
 3. **Ympäristömuuttujien konfigurointi:**
    ```typescript
-   // Aihio AI tuotantokonfiguraatio
+   // Aihio AI tuotantokonfiguraatio (pgvector)
    SUPABASE_URL=xxx
-   SUPABASE_KEY=xxx
-   PINECONE_API_KEY=xxx
-   PINECONE_ENVIRONMENT=xxx
-   PINECONE_INDEX=aihio-production
+   SUPABASE_SERVICE_ROLE_KEY=xxx // Tarvitaan palvelinpuolen operaatioihin
+   OPENAI_API_KEY=xxx // Tarvitaan edelleen dokumenttien upotukseen
    ```
 
-### Erityishuomiot matalan latenssin widgetejä varten
+### Erityishuomiot matalan latenssin widgetejä varten (Päivitetty: pgvector)
 
-1. **Indeksioptimointi:**
-   - [ ] Optimoi indeksit upotusmallin (embedding model) mukaan
-   - [ ] Suunnittele optimaalinen dimensioiden määrä ja metadatarakenne
-   - [ ] Säädä hybridihakuparametrit
+1. **Indeksioptimointi (`pgvector`):**
+   - [ ] Valitse sopiva `pgvector`-indeksityyppi (HNSW yleensä hyvä kompromissi nopeuden ja tarkkuuden välillä).
+   - [ ] Määritä indeksin parametrit (esim. `hnsw.ef_construction`, `hnsw.m`, `ivfflat.probes`) datan koon ja hakutarpeiden mukaan.
+   - [ ] Suunnittele optimaalinen metadatarakenne `documents`-tauluun tehokasta SQL `WHERE`-suodatusta varten.
 
 2. **Välimuististrategia:**
-   - [ ] Toteuta asiakaskohtainen välimuisti usein kysytyille hauille
-   - [ ] Käytä Redis-välimuistia tulosten tallentamiseen
-   - [ ] Toteuta älykäs välimuistin invalidointi
+   - [ ] Toteuta sovellustason välimuisti usein käytetyille samankaltaisuushakutuloksille (jos tarpeen).
 
 3. **Latenssin minimointi:**
-   - [ ] Valitse Pinecone-alue lähimpänä käyttäjiä 
-   - [ ] Käytä edge-funktioita lähellä käyttäjiä
-   - [ ] Optimoi vektorikoot ja indeksipäivitykset
+   - [ ] Optimoi SQL-kyselyt, jotka sisältävät vektorihakuja ja metadatasuodatusta.
+   - [ ] Varmista, että Supabase-instanssi on riittävän tehokas odotetulle kuormalle.
 
 4. **Skaalautuvuustestaus:**
-   - [ ] Testaa järjestelmää 100-500 rinnakkaisen käyttäjän kuormituksella
-   - [ ] Mittaa hakujen vasteaikoja eri kuormitustilanteissa
-   - [ ] Varmista että 95% hauista valmistuu alle 200ms
+   - [ ] Testaa järjestelmää odotetulla kuormituksella.
+   - [ ] Mittaa hakujen vasteaikoja eri metadatasuodattimilla.
+   - [ ] Varmista tavoitevasteajat (esim. alle 200ms 95% hauista).
 
-### Koodiesimerkki RAG-hakutoteutuksesta
+### Koodiesimerkki RAG-hakutoteutuksesta (Päivitetty: pgvector + Langchain)
 
 ```typescript
-import { PineconeClient } from "@pinecone-database/pinecone";
-import { Document } from "langchain/document";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Document } from 'langchain/document';
+import { OpenAIEmbeddings } from '@langchain/openai'; // Korjattu importti
+import { SupabaseVectorStore } from '@langchain/community/vectorstores/supabase';
+import { supabaseAdmin } from '@aihio/supabase/server-admin-client'; // Oletetaan admin-client palvelinpuolelle
 
-// Pinecone-asiakkaan alustaminen
-const initPinecone = async () => {
-  const pinecone = new PineconeClient();
-  await pinecone.init({
-    apiKey: process.env.PINECONE_API_KEY!,
-    environment: process.env.PINECONE_ENVIRONMENT!,
-  });
-  return pinecone;
-};
-
-// Dokumenttien lisääminen indeksiin
-export const addDocumentsToPinecone = async (
+// Dokumenttien lisääminen Supabaseen (pgvector)
+export const addDocumentsToSupabase = async (
   documents: Document[],
-  customerId: string
+  customerId: string, // Käytetään metadatana
+  chatbotId: string // Linkitetään chatbottiin
 ) => {
-  const pinecone = await initPinecone();
-  const index = pinecone.Index(process.env.PINECONE_INDEX!);
-  
-  // Metadata on kriittinen asiakaskohtaiseen suodatukseen
+  // Varmista, että dokumenteilla on metadata
   const processedDocs = documents.map(doc => ({
     ...doc,
     metadata: {
       ...doc.metadata,
-      customerId,
-      timestamp: new Date().toISOString()
+      customerId, // Asiakkaan tunnus
+      chatbotId, // Chatbotin tunnus
+      source: doc.metadata.source || 'unknown', // Varmistetaan lähde
     }
   }));
-  
+
   const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-3-small", // Nopein ja kustannustehokkain
+    modelName: "text-embedding-3-small",
+    openAIApiKey: process.env.OPENAI_API_KEY, // Tarvitaan upotusten luontiin
   });
-  
-  await PineconeStore.fromDocuments(processedDocs, embeddings, {
-    pineconeIndex: index,
-    namespace: customerId, // Voidaan käyttää myös namespaceja asiakaskohtaiseen erotteluun
-  });
+
+  await SupabaseVectorStore.fromDocuments(
+    processedDocs,
+    embeddings,
+    {
+      client: supabaseAdmin, // Käytä admin-clientia palvelinpuolella
+      tableName: 'documents', // Oletettu taulun nimi
+      queryName: 'match_documents' // Oletettu Supabasen RPC-funktion nimi
+    }
+  );
 };
 
-// Matalan latenssin hakufunktio
+// Matalan latenssin hakufunktio Supabasesta (pgvector)
 export const performSemanticSearch = async (
   query: string,
   customerId: string,
+  chatbotId: string,
   k: number = 5
 ) => {
-  const pinecone = await initPinecone();
-  const index = pinecone.Index(process.env.PINECONE_INDEX!);
-  
   const embeddings = new OpenAIEmbeddings({
     modelName: "text-embedding-3-small",
+    openAIApiKey: process.env.OPENAI_API_KEY,
   });
-  
-  const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-    pineconeIndex: index,
-    namespace: customerId,
+
+  const vectorStore = new SupabaseVectorStore(embeddings, {
+    client: supabaseAdmin, // Käytä admin-clientia
+    tableName: 'documents',
+    queryName: 'match_documents',
+    // Suodatus tapahtuu Langchainin avulla metadatan perusteella
+    filter: {
+        customerId: customerId,
+        chatbotId: chatbotId
+    }
   });
-  
-  // Suodattaminen metadatan perusteella tehostaa hakua
-  const results = await vectorStore.similaritySearch(query, k, {
-    customerId: customerId,
-  });
+
+  // Hae samankaltaiset dokumentit
+  const results = await vectorStore.similaritySearch(query, k);
   
   return results;
 };
 ```
 
-Tämä tuotantovalmis strategia on suunniteltu upotettavien chatbot-widgettien tarpeisiin, joissa latenssi on kriittinen tekijä käyttökokemuksen kannalta. Supabase ja Pinecone -yhdistelmä tarjoaa optimaalisen tasapainon suorituskyvyn, skaalautuvuuden ja helppokäyttöisyyden välillä. 
+Tämä tuotantovalmis strategia on suunniteltu upotettavien chatbot-widgettien tarpeisiin, joissa latenssi on kriittinen tekijä käyttökokemuksen kannalta. Supabase ja Pinecone -yhdistelmä tarjoaa optimaalisen tasapainon suorituskyvyn, skaalautuvuuden ja helppokäyttöisyyden välillä.
+
+# Aihio AI Dashboard - Tehtävälista
+
+## Vaihe 1: Perusrakenne ja Layout
+
+- [ ] Luo hakemistorakenne: `apps/web/src/app/dashboard`
+- [ ] Luo `dashboard/layout.tsx`:
+    - [ ] Toteuta peruslayout (esim. käyttäen `@aihio/ui/Shell` tai vastaavaa)
+    - [ ] Sisällytä sivupalkki navigointilinkeillä (ainakin "Chatbotit")
+    - [ ] Määrittele pääsisältöalue lapsikomponenteille (`children`)
+- [ ] Luo `dashboard/page.tsx` oletussivuksi (voi olla tyhjä tai näyttää perustietoja)
+- [ ] Luo `middleware.ts` `apps/web`-kansioon (jos ei jo olemassa)
+- [ ] Toteuta autentikoinnin tarkistus middlewaressa `/dashboard/*`-reiteille käyttäen `@supabase/ssr` ja `@aihio/supabase/middleware-client`.
+
+## Vaihe 2: Chatbottien listausnäkymä
+
+- [ ] Luo hakemistorakenne: `apps/web/src/app/dashboard/chatbots`
+- [ ] Luo `dashboard/chatbots/page.tsx`:
+    - [ ] Tee siitä `async` Server Component.
+    - [ ] Hae käyttäjän chatbotit palvelimella käyttäen `@aihio/supabase/server-component-client`.
+    - [ ] Luo `ChatbotList`-asiakaskomponentti (`"use client"`) näyttämään haetut chatbotit.
+    - [ ] Käytä `@aihio/ui/Table` tai korttikomponentteja listan esittämiseen.
+    - [ ] Lisää "Luo uusi chatbot" -painike (`@aihio/ui/Button` + `next/link`), joka vie `/dashboard/chatbots/new` -reittiin.
+    - [ ] Lisää toiminnallisuus chatbotin valintaan (linkki `/dashboard/chatbots/[chatbotId]`)
+
+## Vaihe 3: Uuden Chatbotin Luontilomake
+
+- [ ] Luo hakemistorakenne: `apps/web/src/app/dashboard/chatbots/new`
+- [ ] Luo `dashboard/chatbots/new/page.tsx`:
+    - [ ] Luo `CreateChatbotForm`-asiakaskomponentti (`"use client"`).
+    - [ ] Käytä `react-hook-form` ja `zod` lomakkeen hallintaan ja validointiin.
+    - [ ] Käytä `@aihio/ui`-komponentteja lomakekentil
+    - [ ] Luo Server Action (`actions.ts` tiedostoon tai suoraan komponenttiin `"use server"`-direktiivillä) chatbotin luomiseksi.
+        - [ ] Action käyttää `@aihio/supabase/server-actions-client` tietojen tallentamiseen.
+    - [ ] Yhdistä lomakkeen `onSubmit` Server Actioniin.
+    - [ ] Käsittele onnistunut luonti (esim. uudelleenohjaus listanäkymään, notifikaatio).
+    - [ ] Käsittele virheet (esim. virheilmoitukset lomakkeessa).
+
+## Vaihe 4: Chatbotin Muokkausnäkymä
+
+- [ ] Luo dynaaminen reitti: `apps/web/src/app/dashboard/chatbots/[chatbotId]`
+- [ ] Luo `dashboard/chatbots/[chatbotId]/page.tsx`:
+    - [ ] Tee siitä `async` Server Component.
+    - [ ] Hae chatbotin tiedot ID:n perusteella palvelimella (`params.chatbotId`).
+    - [ ] Luo `EditChatbotForm`-asiakaskomponentti (`"use client"`).
+    - [ ] Esitäytä lomake haetuilla tiedoilla.
+    - [ ] Toteuta lomake vastaavasti kuin `CreateChatbotForm` (RHF, Zod, @aihio/ui).
+    - [ ] Luo Server Action chatbotin päivittämiseksi.
+    - [ ] Yhdistä lomakkeen `onSubmit` päivitys-Server Actioniin.
+    - [ ] Käsittele onnistuminen ja virheet.
+
+## Vaihe 5: Lisäominaisuudet (Tulevaisuudessa)
+
+- [ ] Integroi vektoritietokannan konfigurointi lomakkeisiin (esim. `pgvector` asetukset tai Pinecone API-avain).
+- [ ] Toteuta RAG-datalähteiden liittäminen chatbotteihin (UI ja Server Actions).
+- [ ] Toteuta työkalujen liittäminen chatbotteihin (UI ja Server Actions).
+- [ ] Lisää reaaliaikaiset päivitykset listanäkymään Supabase Realtime -avulla.
+- [ ] Lisää chatbotin avatar-kuvan lataus Supabase Storageen.
+- [ ] Viimeistele ja hio käyttöliittymä ja käyttökokemus. 

@@ -29,7 +29,7 @@ export { SidebarContext };
 /**
  * @deprecated
  * This component is deprecated and will be removed in a future version.
- * Please use the Shadcn Sidebar component instead.
+ * Please use the components Sidebar component instead.
  */
 export function Sidebar(props: {
   collapsed?: boolean;

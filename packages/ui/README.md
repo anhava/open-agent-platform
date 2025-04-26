@@ -4,7 +4,7 @@ This package is responsible for managing the UI components and styles across the
 
 This package define two sets of components:
 
-- `Shadcn UI`: A set of UI components that can be used across the app using shadcn UI
+- `components UI`: A set of UI components that can be used across the app uscomponentsmponents UI
 - `Aihio-spesific': Components to leverage the project
 
 
@@ -19,13 +19,13 @@ cd apps/web
 Copy
 
 bun
-bunx --bun shadcn@canary add [COMPONENT]
+bunx --bun components@canary add [COMPONENT]
 Copy
 The CLI will figure out what type of component you are adding and install the correct files to the correct path.
 
-For example, if you run npx shadcn@canary add button, the CLI will install the button component under packages/ui and update the import path for components in apps/web.
+For example, if you run npx components@canary add button, the CLI will install the button component under packages/ui and update the import path for components in apps/web.
 
-If you run npx shadcn@canary add login-01, the CLI will install the button, label, input and card components under packages/ui and the login-form component under apps/web/components.
+If you run npx components@canary add login-01, the CLI will install the button, label, input and card components under packages/ui and the login-form component under apps/web/components.
 
 Importing components
 You can import components from the @workspace/ui package as follows:
@@ -72,7 +72,7 @@ Tailwind CSS v4
 
 apps/web/components.json
 {
-  "$schema": "https://ui.shadcn.com/schema.json",
+  "$schema": "https://ui.components.com/schema.json",
   "style": "new-york",
   "rsc": true,
   "tsx": true,
@@ -94,7 +94,7 @@ apps/web/components.json
 Copy
 packages/ui/components.json
 {
-  "$schema": "https://ui.shadcn.com/schema.json",
+  "$schema": "https://ui.components.com/schema.json",
   "style": "new-york",
   "rsc": true,
   "tsx": true,

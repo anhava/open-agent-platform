@@ -1,0 +1,16 @@
+{
+  "[project]/packages/ui/src/aihio/mode-toggle.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/packages/ui/src/aihio/mode-toggle.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_04402c7a._.js",
+      "static/chunks/packages_ui_src_aihio_mode-toggle_tsx_8b5e553d._.js"
+    ]
+  },
+  "[project]/packages/features/auth/src/captcha/client/index.ts [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/packages/features/auth/src/captcha/client/index.ts [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/packages_features_auth_src_captcha_client_index_ts_089e38a7._.js",
+      "static/chunks/packages_features_auth_src_captcha_client_index_ts_157d2de9._.js"
+    ]
+  }
+}

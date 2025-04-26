@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/Anhava/agent-platform/packages/monitoring/sentry/src/sentry.server.config.ts"],"sourcesContent":["import { init } from '@sentry/nextjs';\r\n\r\ntype Parameters<T extends (args: never) => unknown> = T extends (\r\n  ...args: infer P\r\n) => unknown\r\n  ? P\r\n  : never;\r\n\r\n/**\r\n * @name initializeSentryServerClient\r\n * @description Initialize the Sentry client in the server\r\n * @param props\r\n */\r\nexport function initializeSentryServerClient(\r\n  props: Parameters<typeof init>[0] = {},\r\n) {\r\n  return init({\r\n    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\r\n\r\n    // ...\r\n\r\n    // Note: if you want to override the automatic release value, do not set a\r\n    // `release` value here - use the environment variable `SENTRY_RELEASE`, so\r\n    // that it will also get attached to your source maps,\r\n    ...props,\r\n  });\r\n}\r\n"],"names":[],"mappings":";;;AAAA;;AAaO,SAAS,6BACd,QAAoC,CAAC,CAAC;IAEtC,OAAO,CAAA,GAAA,8IAAA,CAAA,OAAI,AAAD,EAAE;QACV,KAAK,QAAQ,GAAG,CAAC,sBAAsB;QAEvC,MAAM;QAEN,0EAA0E;QAC1E,2EAA2E;QAC3E,sDAAsD;QACtD,GAAG,KAAK;IACV;AACF","debugId":null}}]
+}

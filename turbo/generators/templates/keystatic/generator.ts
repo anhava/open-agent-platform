@@ -47,7 +47,7 @@ export function createKeystaticAdminGenerator(
             .then((json) => json.latest);
 
           pkg.dependencies![dep] = `^${version}`;
-          pkg.dependencies!['@kit/keystatic'] = `workspace:*`;
+          pkg.dependencies!['@aihio/keystatic'] = `workspace:*`;
 
           return JSON.stringify(pkg, null, 2);
         },

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 95, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/Anhava/agent-platform/packages/shared/src/logger/impl/pino.ts"],"sourcesContent":["import { pino } from 'pino';\r\n\r\n/**\r\n * @name Logger\r\n * @description A logger implementation using Pino\r\n */\r\nconst Logger = pino({\r\n  browser: {\r\n    asObject: true,\r\n  },\r\n  level: 'debug',\r\n  base: {\r\n    env: process.env.NODE_ENV,\r\n  },\r\n  errorKey: 'error',\r\n});\r\n\r\nexport { Logger };\r\n"],"names":[],"mappings":";;;AAAA;;AAEA;;;CAGC,GACD,MAAM,SAAS,CAAA,GAAA,4HAAA,CAAA,OAAI,AAAD,EAAE;IAClB,SAAS;QACP,UAAU;IACZ;IACA,OAAO;IACP,MAAM;QACJ,GAAG;IACL;IACA,UAAU;AACZ","debugId":null}}]
+}

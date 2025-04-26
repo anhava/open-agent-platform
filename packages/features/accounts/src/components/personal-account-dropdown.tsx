@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@aihioio/ui/dropdown-menu';
+} from '@aihio/ui/dropdown-menu';
 import { If } from '@aihio/ui/if';
 import { SubMenuModeToggle } from '@aihio/ui/mode-toggle';
 import { ProfileAvatar } from '@aihio/ui/profile-avatar';

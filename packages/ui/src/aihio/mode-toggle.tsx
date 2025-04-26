@@ -1,8 +1,10 @@
 'use client';
 
+import { useMemo } from 'react';
 
 import { Computer, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+
 import { cn } from '../lib/utils';
 import { Button } from '../components/button';
 import {
@@ -10,9 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -20,174 +19,123 @@ import {
 } from '../components/dropdown-menu';
 import { Trans } from './trans';
 
-const THEME_MODES = ['light', 'dark', 'system'] as const;
-type ThemeMode = typeof THEME_MODES[number];
+const MODES = ['light', 'dark', 'system'];
 
-/**
- * Tallentaa teeman evästeeseen.
- * @param {ThemeMode} theme - Tallennettava teema.
- */
-function setCookieTheme(theme: ThemeMode) {
-  // Varmista, että suoritetaan vain selaimessa
-  if (typeof document !== 'undefined') {
-    document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax`;
-  }
-}
-
-/**
- * Renderöi teemaa vastaavan ikonin.
- * @param {object} props - Propsit.
- * @param {ThemeMode | undefined} props.theme - Aktiivinen teema.
- * @param {string} [props.className] - Lisäluokat ikonille.
- * @returns {JSX.Element | null} Ikoni-elementti.
- */
-const ThemeIcon = memo(function ThemeIcon({ theme, className }: { theme: ThemeMode | undefined, className?: string }) {
-  switch (theme) {
-    case 'light':
-      return <Sun className={cn("h-4 w-4", className)} aria-hidden="true" />;
-    case 'dark':
-      return <Moon className={cn("h-4 w-4", className)} aria-hidden="true" />;
-    case 'system':
-      return <Computer className={cn("h-4 w-4", className)} aria-hidden="true" />;
-    default:
-      return null; // Tai jokin oletusikoni
-  }
-});
-ThemeIcon.displayName = 'ThemeIcon';
-
-/**
- * ModeToggle-komponentin propsit
- */
-interface ModeToggleProps {
-  /** Lisäluokat painikkeelle */
-  className?: string;
-  /** Tasaus pudotusvalikolle */
-  align?: DropdownMenuContentProps['align'];
-}
-
-/**
- * `ModeToggle` - Painike teeman vaihtamiseen (valoisa, tumma, järjestelmä).
- * 
- * Näyttää painikkeen, josta avautuu pudotusvalikko teeman valintaa varten.
- * Hyödyntää `next-themes` kirjastoa teeman hallintaan.
- * 
- * @example
- * <ModeToggle align="end" />
- * 
- * @param {ModeToggleProps} props - Komponentin propsit.
- * @returns {JSX.Element} Teemanvaihtopainike.
- */
-export const ModeToggle = memo(function ModeToggle({ 
-  className,
-  align = "end", // Oletus tasaus
-}: ModeToggleProps) {
+export function ModeToggle(props: { className?: string }) {
   const { setTheme, theme } = useTheme();
 
-  // Muodosta valikon kohdat
-  const themeItems = useMemo(() => {
-    return THEME_MODES.map((mode) => (
-      <DropdownMenuItem
-        key={mode}
-        className="cursor-pointer gap-2"
-        onClick={() => {
-          setTheme(mode);
-          setCookieTheme(mode);
-        }}
-        aria-selected={theme === mode}
-      >
-        <ThemeIcon theme={mode} />
-        <Trans i18nKey={`common:${mode}Theme`} defaults={mode.charAt(0).toUpperCase() + mode.slice(1)} />
-      </DropdownMenuItem>
-    ));
+  const Items = useMemo(() => {
+    return MODES.map((mode) => {
+      const isSelected = theme === mode;
+
+      return (
+        <DropdownMenuItem
+          className={cn('space-x-2', {
+            'bg-muted': isSelected,
+          })}
+          key={mode}
+          onClick={() => {
+            setTheme(mode);
+            setCookeTheme(mode);
+          }}
+        >
+          <Icon theme={mode} />
+
+          <span>
+            <Trans i18nKey={`common:${mode}Theme`} />
+          </span>
+        </DropdownMenuItem>
+      );
+    });
   }, [setTheme, theme]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className={cn("relative h-8 w-8", className)} aria-label="Vaihda teema">
-          <Sun className="h-[1.1rem] w-[1.1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.1rem] w-[1.1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        <Button variant="ghost" size="icon" className={props.className}>
+          <Sun className="h-[0.9rem] w-[0.9rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute h-[0.9rem] w-[0.9rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={align}>
-        {themeItems}
-      </DropdownMenuContent>
+
+      <DropdownMenuContent align="end">{Items}</DropdownMenuContent>
     </DropdownMenu>
   );
-});
-ModeToggle.displayName = 'ModeToggle';
+}
 
-/**
- * `SubMenuModeToggle` - Teemanvaihtokomponentti osana toista valikkoa.
- * 
- * Tarjoaa teemanvaihtotoiminnallisuuden alavalikkona (`DropdownMenuSub`).
- * Suunniteltu käytettäväksi esimerkiksi käyttäjävalikon sisällä.
- * Mobiililaitteilla näyttää vaihtoehdot suoraan päävalikossa.
- * 
- * @example
- * <DropdownMenu>
- *   <DropdownMenuTrigger asChild>
- *     <Button variant="ghost">Avaa valikko</Button>
- *   </DropdownMenuTrigger>
- *   <DropdownMenuContent>
- *     <DropdownMenuItem>Profiili</DropdownMenuItem>
- *     <SubMenuModeToggle />
- *     <DropdownMenuItem>Kirjaudu ulos</DropdownMenuItem>
- *   </DropdownMenuContent>
- * </DropdownMenu>
- * 
- * @returns {JSX.Element} Teemanvaihto alavalikkona.
- */
-export const SubMenuModeToggle = memo(function SubMenuModeToggle() {
+export function SubMenuModeToggle() {
   const { setTheme, theme, resolvedTheme } = useTheme();
 
-  // Käytetään radio-ryhmää paremman esteettömyyden ja käyttökokemuksen vuoksi
-  const handleThemeChange = (value: string) => {
-    const newTheme = value as ThemeMode;
-    setTheme(newTheme);
-    setCookieTheme(newTheme);
-  };
+  const MenuItems = useMemo(
+    () =>
+      MODES.map((mode) => {
+        const isSelected = theme === mode;
+
+        return (
+          <DropdownMenuItem
+            className={cn('flex cursor-pointer items-center space-x-2', {
+              'bg-muted': isSelected,
+            })}
+            key={mode}
+            onClick={() => {
+              setTheme(mode);
+              setCookeTheme(mode);
+            }}
+          >
+            <Icon theme={mode} />
+
+            <span>
+              <Trans i18nKey={`common:${mode}Theme`} />
+            </span>
+          </DropdownMenuItem>
+        );
+      }),
+    [setTheme, theme],
+  );
 
   return (
     <>
-      {/* Näytetään alavalikkona isommilla näytöillä */}
       <DropdownMenuSub>
-        <DropdownMenuSubTrigger className="flex cursor-pointer items-center justify-between gap-2">
-          <span className="flex items-center gap-2">
-            <ThemeIcon theme={resolvedTheme as ThemeMode} />
-            <Trans i18nKey="common:theme" defaults="Teema" />
+        <DropdownMenuSubTrigger
+          className={
+            'hidden w-full items-center justify-between gap-x-3 lg:flex'
+          }
+        >
+          <span className={'flex space-x-2'}>
+            <Icon theme={resolvedTheme} />
+
+            <span>
+              <Trans i18nKey={'common:theme'} />
+            </span>
           </span>
         </DropdownMenuSubTrigger>
-        <DropdownMenuSubContent>
-          <DropdownMenuRadioGroup value={theme} onValueChange={handleThemeChange}>
-            {THEME_MODES.map((mode) => (
-              <DropdownMenuRadioItem key={mode} value={mode} className="cursor-pointer gap-2">
-                <ThemeIcon theme={mode} />
-                <Trans i18nKey={`common:${mode}Theme`} defaults={mode.charAt(0).toUpperCase() + mode.slice(1)} />
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuSubContent>
+
+        <DropdownMenuSubContent>{MenuItems}</DropdownMenuSubContent>
       </DropdownMenuSub>
 
-      {/* Näytetään suorina itemeinä pienemmillä näytöillä (CSS hoitaa piilotuksen) - TÄMÄ OSIO VOIDAAN POISTAA JOS EI TARVITA */}
-      {/* 
-      <div className="lg:hidden">
-        <DropdownMenuSeparator className="lg:hidden" />
-        <DropdownMenuLabel className="lg:hidden">
-          <Trans i18nKey="common:theme" defaults="Teema" />
+      <div className={'lg:hidden'}>
+        <DropdownMenuLabel>
+          <Trans i18nKey={'common:theme'} />
         </DropdownMenuLabel>
-        <DropdownMenuRadioGroup value={theme} onValueChange={handleThemeChange} className="lg:hidden">
-          {THEME_MODES.map((mode) => (
-            <DropdownMenuRadioItem key={mode + '-mobile'} value={mode} className="cursor-pointer gap-2">
-              <ThemeIcon theme={mode} />
-              <Trans i18nKey={`common:${mode}Theme`} defaults={mode.charAt(0).toUpperCase() + mode.slice(1)} />
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
+
+        {MenuItems}
       </div>
-      */}
     </>
   );
-});
-SubMenuModeToggle.displayName = 'SubMenuModeToggle';
+}
+
+function setCookeTheme(theme: string) {
+  document.cookie = `theme=${theme}; path=/; max-age=31536000`;
+}
+
+function Icon({ theme }: { theme: string | undefined }) {
+  switch (theme) {
+    case 'light':
+      return <Sun className="h-4" />;
+    case 'dark':
+      return <Moon className="h-4" />;
+    case 'system':
+      return <Computer className="h-4" />;
+  }
+}

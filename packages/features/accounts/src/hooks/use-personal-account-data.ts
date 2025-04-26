@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useSupabase } from '@aihioio/supabase/hooks/use-supabase';
+import { useSupabase } from '@aihio/supabase/hooks/use-supabase';
 
 export function usePersonalAccountData(
   userId: string,

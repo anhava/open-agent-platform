@@ -1,0 +1,13 @@
+{
+  "sorted_middleware": [],
+  "middleware": {},
+  "instrumentation": {
+    "files": [
+      "server/edge/chunks/node_modules_zod_lib_index_mjs_1f2e77ea._.js",
+      "server/edge/chunks/_e85d25a0._.js",
+      "server/edge/chunks/apps_aihio_edge-wrapper_8b0bc6d5.js"
+    ],
+    "name": "instrumentation"
+  },
+  "functions": {}
+}

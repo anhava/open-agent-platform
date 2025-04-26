@@ -1,0 +1,10 @@
+# Supabase
+.env
+*/.env
+supabase/.branches
+supabase/.temp
+supabase/functions/**/node_modules
+
+# Kommentoi alla oleva rivi pois, jos haluat commitoida seed.sql-tiedoston
+# (yleensä turvallista, jos ei sisällä salasanoja)
+# !supabase/seed.sql 
