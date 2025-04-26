@@ -1,0 +1,34 @@
+{
+  "name": "@aihio/wordpress",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "start": "docker compose up"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts",
+    "./renderer": "./src/content-renderer.tsx"
+  },
+  "devDependencies": {
+    "@aihio/cms-types": "workspace:*",
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@types/node": "^22.14.0",
+    "@types/react": "19.1.0",
+    "wp-types": "^4.67.1"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "@aihio/i18n",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/i18n.server.ts",
+    "./client": "./src/i18n.client.ts",
+    "./provider": "./src/i18n-provider.tsx"
+  },
+  "devDependencies": {
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/shared": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@tanstack/react-query": "5.72.2",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-i18next": "^15.4.1"
+  },
+  "dependencies": {
+    "i18next": "24.2.3",
+    "i18next-browser-languagedetector": "8.0.4",
+    "i18next-resources-to-backend": "^1.2.1"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

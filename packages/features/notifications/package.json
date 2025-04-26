@@ -1,0 +1,38 @@
+{
+  "name": "@aihio/notifications",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    "./api": "./src/server/api.ts",
+    "./components": "./src/components/index.ts",
+    "./hooks": "./src/hooks/index.ts"
+  },
+  "devDependencies": {
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/supabase": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@supabase/supabase-js": "2.49.4",
+    "@tanstack/react-query": "5.72.2",
+    "@types/react": "19.1.0",
+    "lucide-react": "^0.487.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-i18next": "^15.4.1"
+  },
+  "prettier": "@aihio/prettier-config",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "@aihio/tsconfig/base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "paths": {
+      "@/components": ["./src/components/*"],
+      "@/utils": ["./src/lib/utils"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/hooks": ["./src/hooks"],
+      "@/ui": ["./src/components/*"],
+      "@/ui/*": ["./src/components/*"]
+    }
+  },
+  "include": ["*.ts", "src"],
+  "exclude": ["node_modules"]
+}

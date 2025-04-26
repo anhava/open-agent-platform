@@ -1,0 +1,21 @@
+{
+  "name": "@aihio/prettier-config",
+  "private": true,
+  "version": "0.1.0",
+  "main": "index.mjs",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check \"**/*.{mjs,json}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "latest",
+    "prettier": "latest",
+    "prettier-plugin-tailwindcss": "latest"
+  },
+  "devDependencies": {
+    "@aihio/tsconfig": "workspace:*",
+    "typescript": "^5.8.3"
+  },
+  "prettier": "./index.mjs"
+}

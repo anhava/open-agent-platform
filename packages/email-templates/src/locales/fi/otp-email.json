@@ -1,0 +1,7 @@
+{
+  "subject": "Kertakäyttösalasana palveluun {{productName}}",
+  "heading": "Kertakäyttösalasana palveluun {{productName}}",
+  "otpText": "Kertakäyttösalasanasi on: {{otp}}",
+  "footerText": "Syötä tämä kertakäyttösalasana sovellukseen jatkaaksesi.",
+  "mainText": "Saat tämän sähköpostin, koska sinun täytyy vahvistaa henkilöllisyytesi kertakäyttösalasanan avulla."
+}

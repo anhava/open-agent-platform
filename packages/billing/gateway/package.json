@@ -1,0 +1,46 @@
+{
+  "name": "@aihio/billing-gateway",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts",
+    "./checkout": "./src/components/embedded-checkout.tsx",
+    "./marketing": "./src/components/marketing.tsx"
+  },
+  "devDependencies": {
+    "@aihio/billing": "workspace:*",
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/lemon-squeezy": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/shared": "workspace:*",
+    "@aihio/stripe": "workspace:*",
+    "@aihio/supabase": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@hookform/resolvers": "^5.0.1",
+    "@supabase/supabase-js": "2.49.4",
+    "@types/react": "19.1.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.487.0",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "react-hook-form": "^7.55.0",
+    "react-i18next": "^15.4.1",
+    "zod": "^3.24.2"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

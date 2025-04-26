@@ -1,0 +1,41 @@
+{
+  "name": "@aihio/keystatic",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts",
+    "./renderer": "./src/content-renderer.tsx",
+    "./admin": "./src/keystatic-admin.tsx",
+    "./route-handler": "./src/keystatic-route-handler.ts"
+  },
+  "dependencies": {
+    "@keystatic/core": "0.5.46",
+    "@keystatic/next": "^5.0.4",
+    "@markdoc/markdoc": "^0.5.1"
+  },
+  "devDependencies": {
+    "@aihio/cms-types": "workspace:*",
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@types/node": "^22.14.0",
+    "@types/react": "19.1.0",
+    "react": "19.1.0",
+    "zod": "^3.24.2"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

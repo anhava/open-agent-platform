@@ -1,0 +1,39 @@
+{
+  "name": "@aihio/lemon-squeezy",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts"
+  },
+  "dependencies": {
+    "@lemonsqueezy/lemonsqueezy.js": "4.0.0"
+  },
+  "devDependencies": {
+    "@aihio/billing": "workspace:*",
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/shared": "workspace:*",
+    "@aihio/supabase": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@types/react": "19.1.0",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "zod": "^3.24.2"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

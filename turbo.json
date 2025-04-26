@@ -17,6 +17,22 @@
     },
     "dev": {
       "dependsOn": ["^dev"]
+    },
+    "db:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "env:generate": {
+      "cache": false
+    },
+    "env:validate": {
+      "cache": false
     }
   }
 }

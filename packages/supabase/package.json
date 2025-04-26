@@ -1,0 +1,47 @@
+{
+  "name": "@aihio/supabase",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "db:generate": "supabase gen types typescript --local > src/database.types.ts",
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    "./server-client": "./src/clients/server-client.ts",
+    "./server-admin-client": "./src/clients/server-admin-client.ts",
+    "./middleware-client": "./src/clients/middleware-client.ts",
+    "./server-actions-client": "./src/clients/server-actions-client.ts",
+    "./route-handler-client": "./src/clients/route-handler-client.ts",
+    "./server-component-client": "./src/clients/server-component-client.ts",
+    "./browser-client": "./src/clients/browser-client.ts",
+    "./check-requires-mfa": "./src/check-requires-mfa.ts",
+    "./require-user": "./src/require-user.ts",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./database": "./src/database.types.ts",
+    "./auth": "./src/auth.ts"
+  },
+  "devDependencies": {
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "2.49.4",
+    "@tanstack/react-query": "5.72.2",
+    "@types/react": "19.1.0",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "server-only": "^0.0.1",
+    "zod": "^3.24.2"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

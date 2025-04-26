@@ -1,0 +1,31 @@
+{
+  "name": "@aihio/email-templates",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@aihio/prettier-config",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.36"
+  },
+  "devDependencies": {
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/i18n": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/tsconfig": "workspace:*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

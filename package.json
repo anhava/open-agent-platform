@@ -1,36 +1,69 @@
 {
-  "name": "open-agent-platform",
-  "author": "LangChain",
+  "name": "aihio-open-agent-platform",
+  "author": "Aihio.ai Ltd.",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*",
+    "packages/billing/*",
+    "packages/cms/*",
+    "packages/features/*",
+    "packages/mailers/*",
+    "packages/monitoring/*"
   ],
   "scripts": {
-    "dev": "turbo dev",
+    "postinstall": "manypkg fix",
+    "prepare": "husky",
+    "pre-commit": "bun format-and-lint && bun lint-repo && turbo check-broken-links && manypkg check",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json",
+    "lint-repo:fix": "bun lint-repo --fix",
+    "dev": "cross-env FORCE_COLOR=1 turbo dev --parallel",
     "build": "turbo build",
     "turbo:command": "turbo",
     "format": "turbo format",
     "lint": "turbo lint",
-    "lint:fix": "turbo lint:fix"
+    "lint:fix": "turbo lint:fix",
+    "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
+    "clean": "git clean -xdf node_modules dist .next .turbo",
+    "clean:workspaces": "turbo clean",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "env:generate": "turbo gen env",
+    "env:validate": "turbo gen validate-env"
   },
   "devDependencies": {
+    "@aihio/tsconfig": "workspace:*",
+    "@biomejs/biome": "1.9.4",
     "@eslint/eslintrc": "^3.3.0",
+    "@manypkg/cli": "^0.23.0",
+    "@tolgee/cli": "2.8.2",
     "@tsconfig/recommended": "^1.0.8",
+    "@turbo/gen": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "eslint": "^9.19.0",
-    "eslint-config-prettier": "^10.1.1",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-no-instanceof": "^1.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "prettier": "^3.3.3",
+    "eslint-plugin-prettier": "^5.2.6",
+    "husky": "9.1.7",
+    "prettier": "^3.5.3",
+    "sherif": "1.5.0",
+    "supabase": "^2.22.6",
     "tsx": "^4.19.1",
-    "turbo": "^2.5.0",
-    "typescript": "^5"
+    "turbo": "2.5.2",
+    "typescript": "^5.8.3",
+    "zod": "^3.24.2"
   },
-  "resolutions": {
+  "overrides": {
     "@langchain/core": "^0.3.42"
   },
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "bun@1.2.8",
+  "engines": {
+    "node": "^22"
+  }
 }

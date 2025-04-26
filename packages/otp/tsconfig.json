@@ -1,0 +1,4 @@
+{
+  "extends": "@aihio/tsconfig/base.json",
+  "include": ["src/**/*.ts", "scripts/**/*.ts"]
+}

@@ -1,0 +1,59 @@
+{
+  "name": "@aihio/team-accounts",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    "./api": "./src/server/api.ts",
+    "./components": "./src/components/index.ts",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./webhooks": "./src/server/services/webhooks/index.ts"
+  },
+  "dependencies": {
+    "nanoid": "^5.1.5"
+  },
+  "devDependencies": {
+    "@aihio/accounts": "workspace:*",
+    "@aihio/billing-gateway": "workspace:*",
+    "@aihio/email-templates": "workspace:*",
+    "@aihio/eslint-config": "workspace:*",
+    "@aihio/mailers": "workspace:*",
+    "@aihio/monitoring": "workspace:*",
+    "@aihio/next": "workspace:*",
+    "@aihio/otp": "workspace:*",
+    "@aihio/prettier-config": "workspace:*",
+    "@aihio/shared": "workspace:*",
+    "@aihio/supabase": "workspace:*",
+    "@aihio/tsconfig": "workspace:*",
+    "@aihio/ui": "workspace:*",
+    "@hookform/resolvers": "^5.0.1",
+    "@supabase/supabase-js": "2.49.4",
+    "@tanstack/react-query": "5.72.2",
+    "@tanstack/react-table": "^8.21.2",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.2",
+    "class-variance-authority": "^0.7.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.487.0",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.55.0",
+    "react-i18next": "^15.4.1",
+    "sonner": "^2.0.3",
+    "zod": "^3.24.2"
+  },
+  "prettier": "@aihio/prettier-config",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}

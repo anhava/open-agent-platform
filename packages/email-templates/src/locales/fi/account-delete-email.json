@@ -1,0 +1,9 @@
+{
+  "subject": "Olemme poistaneet {{productName}}-tilisi",
+  "previewText": "Olemme poistaneet {{productName}}-tilisi",
+  "hello": "Hei {{displayName}},",
+  "paragraph1": "Vahvistamme, että olemme käsitelleet pyyntösi poistaa {{productName}}-tilisi.",
+  "paragraph2": "On ikävä nähdä sinun lähtevän. Huomioithan, että tämä toimenpide on peruuttamaton, ja poistamme kaikki tietosi järjestelmistämme.",
+  "paragraph3": "Kiitämme sinua vielä kerran {{productName}}-palvelun käytöstä.",
+  "paragraph4": "{{productName}}-tiimi"
+}

@@ -1,0 +1,9 @@
+{
+  "subject": "Sinut on kutsuttu liittymään tiimiin",
+  "heading": "Liity {{teamName}}-tiimiin palvelussa {{productName}}",
+  "hello": "Hei {{invitedUserEmail}},",
+  "mainText": "<strong>{{inviter}}</strong> on kutsunut sinut <strong>{{teamName}}</strong>-tiimiin palvelussa <strong>{{productName}}</strong>.",
+  "joinTeam": "Liity {{teamName}}-tiimiin",
+  "copyPasteLink": "tai kopioi ja liitä tämä URL-osoite selaimeen:",
+  "invitationIntendedFor": "Tämä kutsu on tarkoitettu osoitteelle {{invitedUserEmail}}."
+}
